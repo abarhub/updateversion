@@ -14,6 +14,18 @@ def getVersion(path):
         raise Exception("Erreur pour la commande")
 
 
+def updateVersion(path, version):
+    res = subprocess.run(["mvn", "versions:set", "-DnewVersion=" + version, "-DgenerateBackupPoms=false", "-f",
+                          path + "/pom.xml"], stdout=subprocess.PIPE, text=True, shell=True)
+    if res.returncode == 0:
+        return res.stdout
+    else:
+        print("code retour:" + str(res.returncode))
+        print("stdout:" + str(res.stdout))
+        print("stderr:" + str(res.stderr))
+        raise Exception("Erreur pour la commande")
+
+
 def check_int(s):
     if s[0] in ('-', '+'):
         return False
@@ -70,6 +82,7 @@ def updateMaven(path):
         versionModifiee = choixVersion(version)
         if len(versionModifiee) > 0:
             print('version modifiee=' + versionModifiee)
+            updateVersion(path, versionModifiee)
     else:
         raise Exception('Le répertoire \'' + path + '\' n\'est pas un répertoir maven')
 
