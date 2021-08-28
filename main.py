@@ -35,6 +35,8 @@ def check_int(s):
 def choixVersion(versionActuelle):
     if versionActuelle.endswith(SNAPSHOT):
         version = versionActuelle[0:len(versionActuelle) - len(SNAPSHOT)]
+    else:
+	    version=versionActuelle
     tmp = version.split('.')
     tab = []
     for i in range(len(tmp)):
