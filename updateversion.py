@@ -36,7 +36,7 @@ def choixVersion(versionActuelle):
     if versionActuelle.endswith(SNAPSHOT):
         version = versionActuelle[0:len(versionActuelle) - len(SNAPSHOT)]
     else:
-	    version=versionActuelle
+        version = versionActuelle
     tmp = version.split('.')
     tab = []
     for i in range(len(tmp)):
@@ -48,10 +48,12 @@ def choixVersion(versionActuelle):
             for j in range(len(tmp)):
                 if j > 0:
                     res += '.'
-                if j == i:
+                if j < i:
+                    res += tmp[j]
+                elif j == i:
                     res += str(n)
                 else:
-                    res += tmp[j]
+                    res += '0'
             if len(res) > 0:
                 res += SNAPSHOT
             tab.append(res)
@@ -62,6 +64,8 @@ def choixVersion(versionActuelle):
         for s in tab:
             print(str(i) + ") version=" + s)
             i += 1
+        choixAutre = i
+        print(str(i) + ") autre")
         print("0) quitter")
 
         for line in sys.stdin:
@@ -72,6 +76,12 @@ def choixVersion(versionActuelle):
                 n2 = int(s)
                 if n2 > 0 and n2 <= len(tab):
                     return tab[n2 - 1]
+                elif n2 == choixAutre:
+                    nouvelleVersion = input("Saisissez la version:")
+                    if nouvelleVersion != '':
+                        nouvelleVersion = nouvelleVersion.strip()
+                    if nouvelleVersion != '':
+                        return nouvelleVersion
     else:
         return ''
 
